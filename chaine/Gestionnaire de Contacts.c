@@ -15,63 +15,91 @@
 // Numéro : 0612345678
 // Contact ajouté avec succès!
 
-#include<stdio.h>
-#include<string.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#define taille_max 100
 
-//fonction qui Demande à l'utilisateur de saisir un nom et un numéro de téléphone.
-
-char * ajouter_contact( ){
-char nom[10],num_tele[10];
-char nom[10],num_tele[10],* contact = malloc(100);
-printf("entre le nom : ");
-scanf("%s",&nom);
-system("cls");
-getchar();
-printf("entre le nemuro de telephone : ");
-scanf("%s",&num_tele);
-system("cls");
-strcpy(contact,"nom :");
-strcat(contact,nom); 
-strcat(contact,"\n Numero  :");
-strcat(contact,num_tele); 
-printf("%s \nContact ajoute avec succes!",contact);
-return contact;
+int nombre_contact = 0;
+// 1. Ajouter un contact
+void Ajouter_un_contact(char nom[][taille_max], char numTele[][taille_max])
+{
+    printf("entre un nom: ");
+    fgets(nom[nombre_contact], taille_max, stdin);
+    nom[nombre_contact][strlen(nom[nombre_contact]) - 1] = '\0';
+agin:
+    system("cls");
+    printf("entre un nemuro de telephone : ");
+    fgets(numTele[nombre_contact], taille_max, stdin);
+    numTele[nombre_contact][strlen(numTele[nombre_contact]) - 1] = '\0';
+    if (strlen(numTele[nombre_contact]) != 10)
+        // goto agin;
+        system("cls");
+    nombre_contact++;
+    printf("Contact ajoute avec succes!\n ");
+}
+// 2. Afficher tous les contacts
+void Afficher_tous_les_contacts(char nom[][taille_max], char numTele[][taille_max])
+{
+    if (nombre_contact == 0)
+        printf("aucan contact ");
+    else
+        for (int i = 0; i < nombre_contact; i++)
+            printf(" %s ::::: %s  \n", nom[i], numTele[i]);
 }
 
-char  Afficher_tous_les_contacts(){
-char nom[10],num_tele[10],* contact = malloc(100);
-printf("entre le nom : ");
-scanf("%s",&nom);
-system("cls");
-getchar();
-printf("entre le nemuro de telephone : ");
-scanf("%s",&num_tele);
-system("cls");
-strcpy(contact,"nom :");
-strcat(contact,nom); 
-strcat(contact,"\n Numero  :");
-strcat(contact,num_tele); 
-return contact;
+// 3. Rechercher un contact
+
+void Rechercher_un_contact(char nom[][taille_max], char numTele[][taille_max])
+{   
+    char nom_recherche[20];
+    printf("entre nom");
+    fgets(nom_recherche, 20, stdin);
+    for (int i = 0; i < nombre_contact; i++)
+        if (strcmp(nom[i], nom_recherche) == 0)
+            printf(" %s ::::: %s  \n", nom[i], numTele[i]);
 }
 
-void menu(){
+void menu(char nom[][taille_max], char numTele[][taille_max]){
+    int choix;
+    do {
+        printf("\n--- Gestionnaire de Contacts ---\n");
+        printf("1. Ajouter un contact\n");
+        printf("2. Afficher tous les contacts\n");
+        printf("3. Rechercher un contact\n");
+        printf("4. Quitter\n");
+        printf("Votre choix : ");
+        scanf("%d", &choix);
+        getchar(); // vider le buffer après scanf
 
-    printf("\n1. Ajouter un contact \n2. Afficher tous les contacts \n3. Rechercher un contact \n4. Quitter");
-
+        switch (choix) {
+            case 1:
+                system("cls");
+                Ajouter_un_contact(nom, numTele);
+                break;
+            case 2:
+                system("cls");
+                Afficher_tous_les_contacts(nom, numTele);
+                break;
+            case 3:
+                system("cls");
+                Rechercher_un_contact(nom, numTele);
+                break;
+            case 4:
+                system("cls");
+                printf("👋 Au revoir !\n");
+                break;
+            default:
+                system("cls");
+                printf("⚠️ Choix invalide.\n");
+        }
+    } while (choix != 4);
 }
 
+int main()
+{
+    char nom[taille_max][taille_max];
+    char numTele[taille_max][taille_max];
 
-
-int main(){
-char *chaine = malloc(10 * sizeof(char*));
-
-//  chaine[0]= malloc(10 * sizeof(char*));
- chaine= ajouter_contact(chaine);
-
- printf("%s", chaine);
-
-// menu();
-
-
+    menu(nom, numTele);
 }
